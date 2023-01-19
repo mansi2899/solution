@@ -28,7 +28,7 @@ export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemCli
             </S.ListItem>
           )
         }
-
+      // console.log("Role list s.type" ,s.type )
         return (
           <S.ListItem key={i}>
             <RollStateIcon type={s.type} size={size} onClick={() => onClick(s.type)} />

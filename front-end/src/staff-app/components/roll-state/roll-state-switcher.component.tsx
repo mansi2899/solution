@@ -18,12 +18,15 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
   }
 
   const onClick = () => {
+    console.log("Here");
+    
     const next = nextState()
     setRollState(next)
     if (onStateChange) {
       onStateChange(next)
     }
   }
+  // console.log("role switcher",rollState)
 
   return <RollStateIcon type={rollState} size={size} onClick={onClick} />
 }

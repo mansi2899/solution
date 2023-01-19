@@ -1,16 +1,47 @@
 import React from "react"
+import {  createContext,useState } from "react";
 import styled from "styled-components"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Images } from "assets/images"
 import { Colors } from "shared/styles/colors"
 import { Person, PersonHelper } from "shared/models/person"
 import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-switcher.component"
+import { RolllStateType } from "shared/models/roll";
 
 interface Props {
   isRollMode?: boolean
   student: Person
+  totalstudent :number
+  onAttendanceStatusChange?: (studentDetails: any)=>void
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
+
+
+const StudentListTile: React.FC<Props> = ({ isRollMode, student, totalstudent, onAttendanceStatusChange }) => {
+  // const [allstudent, setallstudent] = useState(0);
+
+  const [RoleArray , setRollArray] = useState([
+    { type: "all", count: 0 },
+    { type: "present", count: 0 },
+    { type: "late", count: 0 },
+    { type: "absent", count: 0 },
+  ]);
+  const ChangeRollArray = (e :any) => {
+    setRollArray([
+      { type: "all", count: 1},
+      { type: "present", count: 0 },
+      { type: "late", count: 0 },
+      { type: "absent", count: 0 },
+    ]);
+  };
+  
+  
+  
+// setallstudent(allstudent+1);
+// console.log(totalstudent);
+
+const RoleContextValue = {RoleArray, ChangeRollArray}
+
+ 
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -19,13 +50,21 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher />
+          <RollStateSwitcher 
+          initialState={student.status?student.status as RolllStateType:'unmark'}
+          onStateChange={(value: any)=>{
+            if(onAttendanceStatusChange) 
+              onAttendanceStatusChange({student: student, attendanceStatus: value});
+
+            }}
+           />
         </S.Roll>
       )}
     </S.Container>
   )
 }
 
+export {StudentListTile}
 const S = {
   Container: styled.div`
     margin-top: ${Spacing.u3};
